@@ -1,253 +1,331 @@
 package com.banking.main;
 
+import java.util.List;
 import java.util.Scanner;
-import static com.banking.validity.Validity.*;
-
 
 import org.apache.log4j.Logger;
 
-import com.banking.dao.BankingDao;
-import com.banking.dao.impl.bankingDaoImpl;
 import com.banking.exception.BankingException;
-import com.banking.main.BankingMain;
+import com.banking.model.Account;
+import com.banking.model.Bank;
 import com.banking.model.Customer;
-import com.banking.model.Login;
-import com.banking.model.User;
-
+import com.banking.model.Transaction;
+import com.banking.service.BankCrudService;
+import com.banking.service.BankLoginService;
+import com.banking.service.BankSearchService;
+import com.banking.serviceImpl.BankCrudServiceImpl;
+import com.banking.serviceImpl.BankLoginServiceImpl;
+import com.banking.serviceImpl.BankSearchServiceImpl;
 
 public class BankingMain {
-	private static Logger log = Logger.getLogger(BankingMain.class);
-
-	public static void main(String[] args) {
-		String userName=null;
-		String passWord=null;
-
-		Scanner sc=new Scanner(System.in);
-		int ch=0;
+private static Logger log = Logger.getLogger(BankingMain.class);
+	public static void main(String[] args) throws BankingException {
+		Scanner sc = new Scanner(System.in);
+		int ch = 0;
 		do {
-			log.info("Welcome to Engineer's Bank");
+			log.info("Welcome to BankApp V1.0");
+			log.info("==================================");
+			log.info("\nBank Menu");
 			log.info("1)Login");
-			log.info("2)Sign up");
-			log.info("3)Forgot password");
-			log.info("4)EXIT");
-			log.info("Enter your choice 1-4");
+			log.info("2)Register as a Customer");
+			log.info("3)EXIT");
+			log.info("\nEnter your Choice 1-3");
 			try {
-			ch=Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-			
+				ch = Integer.parseInt(sc.nextLine());
+			} catch (NumberFormatException e) {
+
 			}
-			switch (ch){
-			
-			case 1:
-				log.info("Enter the username");
-				 userName=sc.nextLine();
-				
-				log.info("Enter the password");
-				 passWord=sc.nextLine();
-				
-				
-				break;
-			case 2:
-//				log.info("Welcome to  the Engineer's Bank");
-//				log.info("Enter the First Name");
-//				String fname=sc.nextLine();
-//				
-//				log.info("Enter the Middle Name");
-//				String mname=sc.nextLine();
-//				
-//				log.info("Enter the Last Name");
-//				String lname=sc.nextLine();
-//				
-//				log.info("Enter the Date of Birth in dd/mm/yyyy format");
-//				
-//				boolean valid=false;
-//				String dob;
-//				do
-//					{
-//					 dob=sc.nextLine();
-//					if(isValid_dob(dob))
-//						valid=true;
-//					else {
-//						log.info("Please enter valid Date of Birth");
-//					}
-//					}while(!valid);
-//				
-//				log.info("Enter the Father Name");
-//				String fatherName=sc.nextLine();
-//				
-//				
-//				log.info("Enter the Mobile No.");
-//				String mobile=null;
-//				valid=false;
-//				do {
-//					 mobile=sc.nextLine();
-//					if(isValid_mobile(mobile))
-//						valid=true;
-//					else 
-//						System.out.println("Please enter valid mobile no");
-//					}while(!valid);
-//				
-//				log.info("Enter the email address");
-//				String email=sc.nextLine();
-//				
-//				log.info("Enter the Address");
-//				String address=sc.nextLine();
-//				
-//				log.info("Select the id proof\n1:Aadhar card with DOB\n2:Voter Card\n3:Passport\n4:Driving License ");
-//				int idchoice=Integer.parseInt(sc.nextLine());
-//				boolean correct=true;
-//				String idProof=null;
-//				while(correct) {
-//				switch(idchoice)
-//				{
-//				
-//				case 1:
-//					System.out.println("Enter Aadhar number");
-//					 valid=false;
-//					do {
-//						String aadhar=sc.nextLine();
-//						idProof=aadhar;
-//						if(isValid_aadhar(aadhar))
-//							valid=true;
-//						else
-//							log.info("Please Enter correct aadhar number");
-//					}while(!valid);	
-//					
-//					correct=false;
-//					break;
-//				case 2:
-//					log.info("Enter Voter Card number:");
-//					valid=false;
-//					do {
-//					String voter=sc.nextLine();
-//					 idProof=voter;
-//					if(isValid_voter(voter))
-//						valid=true;
-//					else
-//						log.info("Please Enter correct voter number");
-//					}while(!valid)	;
-//					correct=false;
-//
-//					break;
-//				case 3:
-//					valid=false;
-//					log.info("Enter Passport number:");
-//					do {
-//						
-//					String passport=sc.nextLine();
-//					 idProof=passport;
-//					if(isValid_passport(passport))
-//						valid=true;
-//					else
-//						log.info("Please Enter correct passport number");
-//					
-//					}while(!valid);
-//					correct=false;
-//					break;
-//				case 4:
-//					valid=false;
-//					
-//					log.info("Enter Driving Licence  number:");
-//					do {
-//						String driving=sc.nextLine();
-//						 idProof=driving;
-//						if(isValid_driving(driving))
-//							valid=true;
-//						else
-//							log.info("Please Enter correct driving license number");
-//
-//					}while(!valid);
-//				
-//						correct=false;
-//				
-//						break;
-//					
-//					default:
-//						log.info("Please Enter the Valid choice");
-//				}
-//					
-//				}
-//				
-//				log.info("Enter the PAN number");
-//				String pan;
-//				 valid=false;
-//				do {
-//				 pan=sc.nextLine();
-//				if(isValid_pan(pan))
-//					valid=true;
-//				else
-//					log.info("Please Enter correct pan number");
-//				}while(!valid);
-//
-//					
-//				
-//				//outer=false;
-//				
-				log.info("Enter the username:");
-				String username=sc.nextLine();
-			
-				log.info("Enter the password:");
-//				valid=false;
-//				do {
-//					try {
-						String password=sc.nextLine();
-						log.info("enter the starting balance");
-						float balance =Float.parseFloat(sc.nextLine());
-//					}
-//					catch (Exception e) {
-//						// TODO: handle exception
-//					}
-//				if(isValid_password(passWord))
-//					valid=true;
-//				else
-//					log.info("Password Invalid");
-//				}while(!valid); 
-//			Customer customer=new Customer(fname,mname,lname,dob,mobile,address,
-//				fatherName,userName,passWord,idProof,pan,email);
-				User user=new User(userName,passWord,balance);
-			BankingDao bankingDao=new bankingDaoImpl();
+			switch(ch) {
+			case 1: log.info("\n1)Login as Employee");
+					log.info("\n2)Login as Customer");
+					log.info("\nEnter your Choice 1-2");
+					int ch1=0;
+					do {
+						try {
+							ch1 = Integer.parseInt(sc.nextLine());
+						} catch (NumberFormatException e) {
+						}
+						switch(ch1) {
+						case 1: Bank bank = null;
+								BankLoginService bankLoginService=null;
+							   log.info("\nWelcome to Employee Login Screen");
+							   log.info("\nEnter Username:");
+							   String empUsername = sc.nextLine();
+							   log.info("\nEnter Password:");
+							   String empPassword = sc.nextLine();
+							   bank = new Bank(empUsername,empPassword);
+							   try {
+								   bankLoginService = new BankLoginServiceImpl();
+								   bank =bankLoginService.employeeLogin(bank);
+								   if(bank.getEmpUsername().equals(empUsername) && bank.getEmpPassword().equals(empPassword)){
+										log.info("Employee Login Successfully");
+										  int ch2=0;
+										   do {
+											   log.info("\nWelcome "+empUsername+"\n");
+												log.info("\n1)Open Account");
+												log.info("\n2)Approve or Reject an Account");
+												log.info("\n3)View All Customer Personal Details");
+												log.info("\n4)View Customer Account Details");
+												log.info("\n5)View Transaction of Customers");
+												log.info("\n6)Logout");
+												log.info("\nEnter Your Choice 1-5");
+												try {
+													ch2 = Integer.parseInt(sc.nextLine());
+												} catch (NumberFormatException e) {
+												}
+												switch(ch2) {
+												case 1: BankCrudService bankCrudService = new BankCrudServiceImpl();
+														log.info("Enter Your Username");
+														String userName = sc.nextLine();
+														log.info("Enter Your First Name");
+														String fName = sc.nextLine();
+														log.info("Enter Your Last Name");
+														String lName = sc.nextLine();
+														log.info("Enter Your Gender");
+														String gender = sc.nextLine();
+														log.info("Enter Your Date of Birth in (yyy-mm-dd)");
+														String dob = sc.nextLine();
+														log.info("Enter Your Mobile Number(10-Digits)");
+														long custmobile = Long.parseLong(sc.nextLine());
+														log.info("Enter your Occupation");
+														String panNumber = sc.nextLine();
+														log.info("Enter Your City");
+														String city = sc.nextLine();
+														log.info("Enter Your State");
+														String state = sc.nextLine(); 
+														log.info("Set Initial Amount(Min 500)");
+														float initialAmount = Float.parseFloat(sc.nextLine());
+														bank = new Bank(userName,fName,lName,gender,dob,custmobile,panNumber,city,state,initialAmount);
+														try {
+															bankCrudService.openCustomerAccount(bank);
+															log.info("\nBank Account Created Successfully...");
+														} catch (BankingException e) {
+															log.warn(e.getMessage());
+															throw new BankingException("Bank Account  Creation Failed!!");
+														};
+													break;
+												case 2: 
+													break;
+												case 3: BankCrudService bankCrudService1 = new BankCrudServiceImpl();
+												try {
+													List<Bank> bankList=bankCrudService1.getAllCustomerDetails();
+													for(Bank b : bankList) {
+														log.info(b);
+													}
+												}catch(BankingException e) {log.error(e.getMessage());}
+														
+												
+													break;
+												case 4:
+													break;
+												case 5:
+													break;
+												case 6: 
+													log.info("\nLogout Successfully............\n");
+													log.info("\nGoing to Main Menu............");
+													break;
+												}
+										   }while(ch2!=6);
+									}
+									else {
+										log.info("Invalid Details");
+									}
+							   }catch (BankingException e) {
+									log.warn(e.getMessage());
+									throw new BankingException("Employee Login Failed!!!");
+								};
+							break;
+						case 2: Customer customer = null;
+								log.info("\nWelcome to Customer Login Screen");
+								log.info("\n Enter Username:");
+								String custUserName = sc.nextLine();
+								log.info("\n Enter Password:");
+								String custPassword = sc.nextLine();
+//								System.out.println(custUserName);
+//								System.out.println(custPassword);
+								customer = new Customer(custUserName,custPassword);
+								try {
+									 bankLoginService = new BankLoginServiceImpl();
+									  customer =bankLoginService.customerLogin(customer);
+//									  System.out.println(customer.getCustUserName());
+//									  System.out.println(customer.getCustUserName());
+									  if(customer.getCustUserName().equals(custUserName) && customer.getCustPassword().equals(custPassword)){
+										  log.info("Employee Login Successfully\n");
+										  int ch3=0;
+											do {
+												log.info("Welcome "+custUserName);
+												log.info("\n1)Open Account");
+												log.info("\n2)Transfer Amount");
+												log.info("\n3)Withdraw Amount");
+												log.info("\n4)Deposit Amount");
+												log.info("\n5)View statement");
+												log.info("\n6)Logout");
+												log.info("\nEnter Your Choice 1-6");
+												try {
+													ch3 = Integer.parseInt(sc.nextLine());
+												} catch (NumberFormatException e) {
+												}
+												switch(ch3) {
+												case 1:BankCrudService bankCrudService = new BankCrudServiceImpl();
+												log.info("Enter Your Username");
+												String userName = sc.nextLine();
+												log.info("Enter Your First Name");
+												String fName = sc.nextLine();
+												log.info("Enter Your Last Name");
+												String lName = sc.nextLine();
+												log.info("Enter Your Gender");
+												String gender = sc.nextLine();
+												log.info("Enter Your Date of Birth in (yyy-mm-dd)");
+												String dob = sc.nextLine();
+												log.info("Enter Your Mobile Number(10-Digits)");
+												long mobileno = Long.parseLong(sc.nextLine());
+												log.info("Enter your PanCard Number");
+												String panNumber = sc.nextLine();
+												log.info("Enter Your City");
+												String city = sc.nextLine();
+												log.info("Enter Your State");
+												String state = sc.nextLine(); 
+												log.info("Set Initial Amount(Min 500)");
+												float initialAmount = Float.parseFloat(sc.nextLine());
+												bank = new Bank(userName,fName,lName,gender,dob,mobileno,panNumber,city,state,initialAmount);
+												try {
+													bankCrudService.openCustomerAccount(bank);
+													log.info("\nBank Account Created Successfully...");
+												} catch (BankingException e) {
+													log.warn(e.getMessage());
+													throw new BankingException("Bank Account  Creation Failed!!");
+												};
+														break;
+												case 2:log.info("\nEnter Customer Username");
+														String customerUsername = sc.nextLine(); 
+														log.info("\nEnter Customer Mobile Number");
+														double customerMobileNumber = Double.parseDouble(sc.nextLine());
+														log.info("\nEnter the Amount to Transfer(min 500)");
+														double amountTransfer = Double.parseDouble(sc.nextLine());
+														log.info("\nAmount Transfered SuccessFully!!!"); //valid
+														break;
+														
+												case 3: BankSearchService bankSearchService1 = new BankSearchServiceImpl();
+														BankCrudService bankCrudService2 = new BankCrudServiceImpl();
+														Transaction transaction1 =new Transaction();
+														Account account1 = new Account();
+														log.info("Enter your Account Number");
+														int accno1 = Integer.parseInt(sc.nextLine());
+														log.info("\nEnter the Amount to Withdraw(min 500)");
+														float amountWithdraw = Float.parseFloat(sc.nextLine());
+														account1 = bankSearchService1.getBalanceByAccountNumber(accno1);
+														float openingBalance1 = account1.getOpeningbalance();
+														String transType1 = "Withdraw";
+														float closingBalance1 = Math.abs(openingBalance1-amountWithdraw);
+														transaction1 = new Transaction(transType1,openingBalance1,amountWithdraw,closingBalance1,accno1);
+														 transaction1 = bankCrudService2.depositAmount(transaction1);
+														 log.info("Amount " + amountWithdraw
+																	+ "Successfully Withdrawed from your Account Number = "
+																	+ accno1);
+															log.info(transaction1);
+														log.info("\nAmount Withdrawed SuccessFully!!!"); //valid
+														break;
+												case 4: BankSearchService bankSearchService = new BankSearchServiceImpl();
+														BankCrudService bankCrudService1 = new BankCrudServiceImpl();
+														Transaction transaction =new Transaction();
+														Account account = new Account();
+														log.info("Enter your Account Number");
+														int accno = Integer.parseInt(sc.nextLine());
+														log.info("\nEnter the Amount to Deposit(min 500)");
+														float amountDeposit = Float.parseFloat(sc.nextLine());
+														account = bankSearchService.getBalanceByAccountNumber(accno);
+														float openingBalance = account.getOpeningbalance();
+														//System.out.println("THIS IS MY OPENING BALANCE"+openingBalance);
+														String transType = "Deposit";
+														float closingBalance = openingBalance+amountDeposit;
+														//System.out.println(closingBalance);
+														 transaction = new Transaction(transType,openingBalance,amountDeposit,closingBalance,accno);
+														 transaction = bankCrudService1.depositAmount(transaction);
+														 log.info("Amount " + amountDeposit
+																	+ "Successfully deposited into your Account Number = "
+																	+ accno);
+															log.info(transaction);
+														/*
+														 * BankCrudService bankCrudService2 = new BankCrudServiceImpl();
+											BankSearchService bankSearchService1 = new BankSearchServiceImpl();
+											// Transaction transaction=new Transaction();
+											Account account1 = new Account();
+											log.info("Enter Your 11 Digit Account Number");
+											long accountNumber = Long.parseLong(sc.nextLine());
+											log.info("enter Amount to be deposited");
+											double amount = Double.parseDouble(sc.nextLine());
+											account1 = bankSearchService1.getBalanceByAccountNumber(accountNumber);
+											double balance = account1.getOpeningBalance();
+											String transType = "Deposit";
+											double closingBalance = balance + amount;
+											
+											Transaction transaction = new Transaction(accountNumber, amount, balance,
+													closingBalance, transType);
+											transaction = bankCrudService2.depositAmount(transaction);
+											log.info("Amount " + amount
+													+ "Successfully deposited into your Account Number"
+													+ accountNumber);
+											log.info(transaction);
+														 * 
+														 * 
+														 * 
+														 * 
+														 * 
+														 * */
+														log.info("\nAmount Deposited SuccessFully!!!"); //valid
+														break;
+												case 5: log.info("View Statement");
+														break;
+												case 6:
+													log.info("\nLogout Successfully............");
+													log.info("\nGoing to Main Menu............\n");
+													break;
+													
+												}
+											}while(ch3!=6);	
+									  }
+									  else {
+											log.info("Invalid Details..");
+										}
+								}catch(BankingException e) {
+									log.warn(e.getMessage());
+									throw new BankingException("Customer Login Failed!!!");
+								};
+								break;
+								
+						}
+						break; //for employee logout
+					}while(ch1!=2);
+					break; //for customer logout
+			case 2: BankCrudService bankCrudService =null;
+						Bank bank = null;
+						log.info("\nWelcome to Cutomer Login Page\n");
+						log.info("\nEnter Your Name");
+						String name = sc.nextLine();
+						log.info("\nEnter Your Email");
+						String email = sc.nextLine();
+						log.info("\nEnter Your Username");
+						String userName = sc.nextLine();
+						log.info("\nEnter Your Password");
+						String password = sc.nextLine();
+						bank=new Bank(name,email,userName,password);
+						bankCrudService = new BankCrudServiceImpl();
 				try {
-				user =bankingDao.createUser(user);
-					if(user.getUserId()!=null) {
-						System.out.println("Customer Registered Succesfully");
-						System.out.println(user);}
-//			try {
-//				customer =bankingDao.createCustomer(customer);
-//				if(customer.getCustomerId()!=0) {
-//					System.out.println("Customer Registered Succesfully");
-//					System.out.println(customer);
-//				}
-//				
-			}catch (BankingException e) {
-				System.out.println(e.getMessage());
-			}
-				
-				log.info("Registered successfully");
-				
-				break;
-				//register block ends
-				
+					bankCrudService.registerCustomer(bank);
+					log.info("\n Bank Account Registered Successfully...\n");
+				} catch (BankingException e) {
+					log.warn(e.getMessage());
+					throw new BankingException("Bank Account not Registered!!");
+				};
+					break;
 			case 3:
-				
+				log.info("Thanks for using our App.. See you soon. :)");
 				break;
-			case 4:
-				log.info("Thanks for using our Banking  App");
-
-				
-				break;
-
 			default:
 				log.warn("Invalid Choice... Please enter input between 1-4");
-
 				break;
 			}
-			
-		}while(ch!=4);
-				
+		}while(ch!=3);
 	}
+
 }
-
-
-	
-
-
