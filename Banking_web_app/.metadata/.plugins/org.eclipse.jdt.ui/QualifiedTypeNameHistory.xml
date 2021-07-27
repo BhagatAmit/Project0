@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.google.gson.Gson"/>
+<fullyQualifiedTypeName name="com.banking.serviceImpl.BankCrudServiceImpl"/>
+<fullyQualifiedTypeName name="com.banking.service.BankCrudService"/>
+<fullyQualifiedTypeName name="com.banking.service.BankLoginService"/>
+<fullyQualifiedTypeName name="com.banking.model.Bank"/>
+<fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
+<fullyQualifiedTypeName name="com.banking.model.Customer"/>
+<fullyQualifiedTypeName name="com.banking.exception.BankingException"/>
+<fullyQualifiedTypeName name="java.io.PrintWriter"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+</qualifiedTypeNameHistroy>
